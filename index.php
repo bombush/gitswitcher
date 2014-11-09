@@ -2,6 +2,10 @@
 require_once('config.php');
 require_once('functions.php');
 
+foreach($_CONFIG_INCLUDES as $path){
+	include_once($path);
+}
+
 session_start();
 if(!isset($_SESSION['logged']) && (!isset($_POST['password']) || md5($_POST['password']) != GITSWITCHER_PASSWORD)){ //password md5
 ?>
@@ -90,8 +94,10 @@ if(isReservationActive()){
 	</select>
 	<input type="checkbox" name="reserve" value="true">Reserve for testing</input>
 	<input type="text" name="reservation_message" value="Reservation message" />
-	<input type="submit" alue="Checkout branch" />
+	<input type="submit" value="Checkout branch" />
 	<input type="hidden" name="action" value="checkout_branch" />
+	<br>
+	<input type="checkbox" name="clear_cache" value="true" /><label for="clear_cache">Clear cache</label>
 </form>
 </div>
 

@@ -37,7 +37,7 @@ function processAction($action)
 function createNewBranch()
 {
 	$branch_name = sanitizeCommand($_POST['branch_name']);
-	addToOutput(nl2br(shell_exec('sudo git branch '.$branch_name . ' 2>&1')));
+	addToOutput(nl2br(shell_exec(getSudoCommand().'git branch '.$branch_name . ' 2>&1')));
 }
 
 function checkoutBranch()
@@ -49,6 +49,10 @@ function checkoutBranch()
 		reserveForTesting($_POST['reservation_message']);
 
 	gitCheckout($branch_name);
+
+	$clearCache = isset($_POST['clear_cache']);
+	if($clearCache)
+		customClearCache();
 }
 
 
@@ -60,20 +64,20 @@ function switchToDefaultBranch()
 function gitCheckout($branch_name)
 {
 	//checkout and pull
-	$command1 = 'sudo git checkout '.getBranchBaseNameClean($branch_name).' 2>&1';
+	$command1 = getSudoCommand().'git checkout '.getBranchBaseNameClean($branch_name).' 2>&1';
 	addToOutput(shell_exec($command1));
-	$command2 = 'sudo git pull 2>&1';
+	$command2 = getSudoCommand().'git pull 2>&1';
 	addToOutput(shell_exec($command2));
 }
 
 function gitFetch()
 {
-	addToOutput(shell_exec('sudo git fetch -v 2>&1'));
+	addToOutput(shell_exec(getSudoCommand().'git fetch -v 2>&1'));
 }
 
 function getBranchesInfo()
 {
-	$branches = shell_exec('sudo git branch -a 2>&1');
+	$branches = shell_exec(getSudoCommand().'git branch -a 2>&1');
 
 	$branches = explode(PHP_EOL, $branches);
 
@@ -93,13 +97,21 @@ function getBranchesInfo()
 
 function isRepoClean()
 {
-	$status = shell_exec('sudo git status 2>&1');
+	$status = shell_exec(getSudoCommand().'git status 2>&1');
 	if(!strstr($status, 'working directory clean')){
 		addToOutput($status);
 
 	} else {
 		return TRUE;
 	}
+}
+
+function customClearCache()
+{
+	$cleanerClass = CACHE_CLEANER_CLASS;
+	$reflection = new ReflectionClass($cleanerClass);
+	$cleaner = $reflection->newInstance();
+	$cleaner->clean();
 }
 
 //RESERVATIONS
@@ -199,6 +211,11 @@ function addToOutput($string)
 	$GIT_OUTPUT[] = $string;
 }
 
+function addToGitswitcherOutput($string)
+{
+	addToOutput('[GITSWITCHER] '.$string);
+}
+
 function printOutput()
 {
 	global $GIT_OUTPUT;
@@ -206,4 +223,11 @@ function printOutput()
 		echo nl2br($block);
 		echo "<br>";
 	}
+}
+
+function getSudoCommand(){
+	if(!empty(SUDO_USER))
+		return 'sudo -u '.SUDO_USER.' ';
+	else
+		return 'sudo ';
 }
