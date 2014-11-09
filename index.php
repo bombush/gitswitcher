@@ -3,7 +3,7 @@ require_once('config.php');
 require_once('functions.php');
 
 session_start();
-if(!isset($_SESSION['logged']) && (!isset($_POST['password']) || md5($_POST['password']) != 'xxx')){ //password md5
+if(!isset($_SESSION['logged']) && (!isset($_POST['password']) || md5($_POST['password']) != GITSWITCHER_PASSWORD)){ //password md5
 ?>
 	<form method="POST">
 	<input type="password" name="password" autofocus>
