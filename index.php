@@ -14,7 +14,7 @@ if(!isset($_SESSION['logged']) && (!isset($_POST['password']) || md5($_POST['pas
 
 } else {
 	//user is logged in, display some stuff
-$_SESSION['logged'] = true;
+$_SESSION['logged'] = true; 
 
 init();
 
@@ -28,7 +28,7 @@ init();
 ?>
 
 <b>Git output</b>
-<div class="console-output" style="border: 1px solid #aaaaaa; min-height: 50px;">
+<div class="console-output" style="border: 1px solid #aaaaaa; min-height: 50px; max-height: 600px; overflow: scroll;">
 <?php
 	printOutput();
 ?>
