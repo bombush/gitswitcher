@@ -90,7 +90,7 @@ if(isReservationActive()){
 	</select>
 	<input type="checkbox" name="reserve" value="true">Reserve for testing</input>
 	<input type="text" name="reservation_message" value="Reservation message" />
-	<input type="submit" alue="Checkout branch" />
+	<input type="submit" value="Checkout branch" />
 	<input type="hidden" name="action" value="checkout_branch" />
 </form>
 </div>
