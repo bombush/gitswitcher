@@ -5,7 +5,7 @@ function init()
 {
 	chdir(PATH_GIT_REPO);
 
-	if(!isRepoClean()){
+	if(!isRepoClean() && REQUIRE_CLEAN_REPO){
 		echo "<font color=\"red\">Cannot proceed because the repository is not clean</font><br/>";
 		printOutput();
 		exit;
@@ -214,6 +214,9 @@ function printOutput()
 }
 
 function getSudoCommand(){
+	if(!REQUIRE_SUDO)
+		return '';
+
 	if(!empty(SUDO_USER))
 		return 'sudo -u '.SUDO_USER.' ';
 	else

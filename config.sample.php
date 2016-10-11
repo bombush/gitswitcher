@@ -16,4 +16,8 @@ define('GITSWITCHER_PASSWORD', ''); //md5hash
  *  	www-data ALL=(assembla) NOPASSWD: /usr/bin/git
  * 
  */
-define('SUDO_USER', '');
+define('SUDO_USER', ''); // the username to SUDO to
+define('REQUIRE_SUDO', true); // use sudo for GIT operations
+
+define('REQUIRE_CLEAN_REPO', true); //only perform GIT operation on a clean repository
+
