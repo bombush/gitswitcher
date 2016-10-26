@@ -139,8 +139,9 @@ function sanitizeCommand($input)
 function getBranchBaseNameClean($branch_full)
 {
 	$branch_full = getBranchFullNameClean($branch_full);
-	$branch_components = explode('/', $branch_full);
-	return trim($branch_components[count($branch_components)-1]);
+	$branch_base = preg_replace('/(remotes\/[a-zA-Z0-9]*\/)(.*)/', '$2', $branch_full);
+	
+	return $branch_base;
 }
 
 function getBranchFullNameClean($branch_full)
