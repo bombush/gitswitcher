@@ -126,9 +126,10 @@ function getReservationMessage()
 
 function sanitizeCommand($input)
 {
+	$input = trim($input);
 	$regex = '/[ ;]+/';
 	if(preg_match($regex, $input))
-		exit('regex fail');
+		exit('Command contains invalid characters. REGEX: /[ ;]/');
 
 	return strip_tags($input);
 }
