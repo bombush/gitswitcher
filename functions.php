@@ -147,7 +147,7 @@ function getBranchBaseNameClean($branch_full)
 
 function getBranchFullNameClean($branch_full)
 {
-	return ltrim(trim($branch_full),'*');
+	return trim(ltrim(trim($branch_full),'*'));
 }
 
 function isActiveBranch($branch_full)
